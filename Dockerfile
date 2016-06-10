@@ -98,9 +98,19 @@ COPY docker-php-ext-* /usr/local/bin/
 COPY apache2-foreground /usr/local/bin/
 WORKDIR /var/www/html
 
+# Manually set up the apache environment variables
+ENV APACHE_RUN_USER www-data
+ENV APACHE_RUN_GROUP www-data
+ENV APACHE_LOG_DIR /var/log/apache2
+ENV APACHE_LOCK_DIR /var/lock/apache2
+ENV APACHE_PID_FILE /var/run/apache2.pid
+
 # Expose port
 EXPOSE 80
 
 #CMD ["apache2-foreground"]
+
+# Update the default apache site with the config we created.
+ADD apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
 CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
