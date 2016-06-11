@@ -95,7 +95,10 @@ RUN set -xe \
 
 COPY docker-php-ext-* /usr/local/bin/
 
+RUN /usr/sbin/a2dismod 'mpm_*' && /usr/sbin/a2enmod mpm_prefork
+
 COPY apache2-foreground /usr/local/bin/
+COPY index.php /var/www/html
 WORKDIR /var/www/html
 
 # Manually set up the apache environment variables
@@ -105,10 +108,10 @@ ENV APACHE_LOG_DIR /var/log/apache2
 ENV APACHE_LOCK_DIR /var/lock/apache2
 ENV APACHE_PID_FILE /var/run/apache2.pid
 
-# Expose port
+# Expose web port
 EXPOSE 80
-
-#CMD ["apache2-foreground"]
+# Expose SSL port
+EXPOSE 443
 
 # Update the default apache site with the config we created.
 ADD apache-config.conf /etc/apache2/sites-enabled/000-default.conf
