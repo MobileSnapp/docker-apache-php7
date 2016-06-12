@@ -18,9 +18,11 @@ Sometimes you’ll want to debug issues with the container; maybe there are PHP 
     docker run -i -t -p 80:80 my-running-app /bin/bash
     apachectl start
 
+
 ## SSL
 
 As per the defaults, Apache will use the bundled "snakeoil" key when serving SSL. Obviously this isn't sufficient or advisable for production, so you'll want to mount your real keys onto /etc/ssl/. If you name them "certs/ssl-cert-snakeoil.pem" and "private/ssl-cert-snakeoil.key", you'll be able to get by with the default config. Otherwise, you'll want to include a revised site definition. If you don't want to use SSL, you can avoid forwarding port 443 when launching the container (see below).
+
 
 ## Examples
 
@@ -44,6 +46,7 @@ Using non-standard ports:
 If you’re actively developing you want to be able to change files in your usual editor and have them reflected within the container without having to rebuild it. The -v flag allows us to mount a directory from the host into the container:
 
     docker run -p 80:80 -d -v /Users/myapp/site:/var/www/html --name my-running-app mobilesnapp/apache-php7
+
 
 ## Author
 
